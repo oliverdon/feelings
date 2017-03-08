@@ -1,0 +1,56 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;   
+    box-sizing: border-box; 
+}
+
+
+html, body  { 
+    height: 100%;
+    width: 100%;
+}
+
+
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  background-color: #063233;
+  color: white;
+}
+
+.tweet {
+  margin: 0.625rem;
+  padding: 0.625rem;
+  border-radius: 0.625rem;
+  border: 2px solid white;
+}
+
+.pad {
+    padding: 0.625rem;
+}
+
+.posts {
+  height: 94vh;
+  overflow: scroll;
+}
+
+.count {
+  display: inline;
+}
+
+.column {
+  display: inline-block;
+    width: 32%;
+}
+
+#post-holder-positive {
+    background-color: #478D8D;
+}
+
+#post-holder-neutral {
+    background-color: #5C356A;
+}
+
+#post-holder-negative {
+    background-color: #883434;
+}

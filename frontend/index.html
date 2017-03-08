@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiments</title>
+    <link rel="stylesheet" type="text/css" href="./main.css">
+</head>
+<body>
+
+
+<div id="post-holder-positive" class="column pad posts">
+Positive Count: <div id="post-holder-positive-count" class="count">0</div>
+<!-- Blank filled by incoming webscoket data -->
+</div>
+
+<div id="post-holder-neutral" class="column pad posts">
+Neutral Count: <div id="post-holder-neutral-count" class="count">0</div>
+<!-- Blank filled by incoming webscoket data -->
+</div>
+
+<div id="post-holder-negative" class="column pad posts">
+Negative Count: <div id="post-holder-negative-count" class="count">0</div>
+<!-- Blank filled by incoming webscoket data -->
+</div>
+</body>
+
+<script type="text/javascript">
+var positiveCount = 0;
+var negativeCount = 0;
+var neutralCount = 0;
+
+var url = function (s) {
+    var l = window.location;
+    return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + l.pathname + s;
+}
+
+var socket = new WebSocket(url('tweets'));
+socket.onmessage = function(msg) {
+    buildPost(JSON.parse(msg.data));
+};
+
+var buildPost = function (data) {
+    var newTweet = document.createElement('div')
+    newTweet.className = 'tweet';
+    var newTweetText = document.createTextNode(data.tweet.text + '\n');
+    console.log(data.sentiment);
+
+
+    newTweet.appendChild(newTweetText);
+
+    var score = data.sentiment.score;
+    var postHolderString;
+    if (score > 0) {
+        postHolderString = 'post-holder-positive';
+        setCount(++positiveCount, postHolderString);
+    } else if (score < 0) {
+        postHolderString = 'post-holder-negative';
+        setCount(++negativeCount, postHolderString);
+    } else {
+        postHolderString = 'post-holder-neutral';
+        setCount(++neutralCount, postHolderString);
+    }
+    var postHolder = document.getElementById(postHolderString);
+    postHolder.insertBefore(newTweet, postHolder.childNodes[2]);
+};
+
+var setCount = function (count, category) {
+    console.log(count, category);
+    var postHolder = document.getElementById(category + '-count');
+    postHolder.innerHTML = count;
+};
+
+
+</script>
+</html>
